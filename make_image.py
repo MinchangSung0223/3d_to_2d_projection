@@ -2,8 +2,20 @@ import cv2
 import numpy as np
 import math
 import os
+
+
 fps_3d = np.load('feature_3d.npy')
+'''
+fps_3d = np.array([[ 0.020191,  0.033474,  0.020549],
+       [-0.020191,  0.033474,  0.020549],
+       [ 0.027228,  0.001891,  0.020549],
+       [-0.027228,  0.001891,  0.020549],
+       [ 0.      , -0.011374,  0.020549],
+       [ 0.033196, -0.091085,  0.020549],
+       [-0.033196, -0.091085,  0.020549]],dtype=float)
+'''
 img_list = os.listdir('rgb')
+
 def project(xyz, K, RT):
     """
     xyz: [N, 3]
@@ -14,6 +26,7 @@ def project(xyz, K, RT):
     xyz = np.dot(xyz, K.T)
     xy = xyz[:, :2] / xyz[:, 2:]
     return xy
+
 cammatrix =np.array([[ 7.000e+02 ,0.000000000000000000e+00, 3.20e+02],
 [0.000000000000000000e+00 ,7.00e+02, 2.40e+02],
 [0.000000000000000000e+00 ,0.000000000000000000e+00, 1.000000000000000000e+00]],dtype=float)
@@ -51,5 +64,4 @@ for name in img_list:
 		cv2.imshow('mask'+str(k), np.uint8(sample[k]))
 		cv2.imwrite('sample_'+str(k)+"_"+str(name[:-4])+".png",np.uint8(sample[k]))
 		cv2.waitKey(1)
-
 
